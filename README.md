@@ -2,6 +2,11 @@
 
 Bukkit & BungeeCord Config Library
 
+###__Required List__ _(already included)_
+__- Spigot__\
+__- BungeeCord__\
+__- lombok__
+
 ## Example
 ### TestPlugin.java
 ``` Java
