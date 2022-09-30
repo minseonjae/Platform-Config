@@ -2,6 +2,7 @@
 ![snakeyaml](https://img.shields.io/badge/snakeyaml-1.30-GREEN?style=for-the-badge)
 ![gson](https://img.shields.io/badge/gson-2.9.0-GREEN?style=for-the-badge)
 ![lombok](https://img.shields.io/badge/lombok-1.18.24-GREEN?style=for-the-badge)
+
 ####BukkitApi, BungeeCord에 들어있는 Configuration의 기능을 모방하여 제작하였습니다.
 #
 #### 설정 값에 넣을 때
