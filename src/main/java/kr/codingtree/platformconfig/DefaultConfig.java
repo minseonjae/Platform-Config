@@ -28,7 +28,11 @@ public class DefaultConfig implements DefaultSection {
             }
         }
 
-        defaults.put(key, value);
+        if (value instanceof Map) {
+            valuesToDot(key, defaults, (Map<String, Object>) value);
+        } else {
+            defaults.put(key, value);
+        }
     }
     public void addDefaults(Map<String, Object> map) {
         map.forEach((key, value) -> addDefault(key, value));
@@ -49,4 +53,21 @@ public class DefaultConfig implements DefaultSection {
         defaults.clear();
     }
 
+    protected void valuesToDot(String parentKey, Map<String, Object> values, Map<String, Object> loadValues) {
+        loadValues.forEach((key, value) -> {
+            String pkey;
+
+            if (parentKey != null) {
+                pkey = parentKey + "." + key;
+            } else {
+                pkey = key;
+            }
+
+            if (value instanceof Map) {
+                valuesToDot(pkey, values, (Map<String, Object>) value);
+            } else {
+                values.put(pkey, value);
+            }
+        });
+    }
 }

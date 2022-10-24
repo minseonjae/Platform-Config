@@ -27,7 +27,11 @@ public abstract class MemoryConfig extends DefaultConfig implements ConfigSectio
             }
         }
 
-        values.put(key, value);
+        if (value instanceof Map) {
+            valuesToDot(key, values, (Map<String, Object>) value);
+        } else {
+            values.put(key, value);
+        }
     }
     @Override
     public void addAll(Map<String, Object> map) {
@@ -399,7 +403,7 @@ public abstract class MemoryConfig extends DefaultConfig implements ConfigSectio
         HashMap<String, Object> map = new LinkedHashMap<>(originalMap);
 
         defaults.forEach((key, value) -> {
-            if (!originalMap.containsKey(key)) {
+            if (!map.containsKey(key)) {
                 map.put(key, value);
             }
         });
@@ -412,23 +416,22 @@ public abstract class MemoryConfig extends DefaultConfig implements ConfigSectio
 
         originalMap.forEach((key, value) -> {
             if (key.contains(".")) {
-                String[] keySplit = key.split("\\.");
+                String[] kSplit = key.split("\\.");
+                HashMap<String, Object> pMap = null, cMap = null;
 
-                HashMap<String, Object> parent = null, child = null;
-
-                for (int i = 0; i < keySplit.length; i++) {
-                    String childName = keySplit[i];
-                    Object childObject = i < 1 ? map.get(childName) : child.get(childName);
+                for (int i = 0; i < kSplit.length; i++) {
+                    String cName = kSplit[i];
+                    Object cObject = i < 1 ? map.get(cName) : cMap.get(cName);
 
                     if (i < 1) {
-                        parent = (childObject == null ? new LinkedHashMap<>() : (HashMap<String, Object>) childObject);
-                        child = parent;
-                    } else if (i >= keySplit.length - 1) {
-                        child.put(childName, value);
-                        map.put(keySplit[0], parent);
-                    } else if (childObject instanceof HashMap || childObject == null) {
-                        HashMap<String, Object> tempChild = (childObject == null ? new LinkedHashMap<>() : (HashMap<String, Object>) childObject);
-                        child.put(childName, child = tempChild);
+                        pMap = cObject == null ? new LinkedHashMap<>() : (HashMap<String, Object>) cObject;
+                        cMap = pMap;
+                    } else if (i >= kSplit.length - 1) {
+                        cMap.put(cName, value);
+                        map.put(kSplit[0], pMap);
+                    } else if (cObject instanceof HashMap || cObject == null) {
+                        HashMap<String, Object> tChild = cObject == null ? new LinkedHashMap<>() : (HashMap<String, Object>) cObject;
+                        cMap.put(cName, cMap = tChild);
                     }
                 }
             } else {

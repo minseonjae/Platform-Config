@@ -1,0 +1,11 @@
+a: a
+b: 1
+c: true
+list:
+- a
+- b
+- c
+map:
+  a: a
+  b: b
+  c: c

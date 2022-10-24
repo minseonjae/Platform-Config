@@ -6,7 +6,6 @@ import lombok.SneakyThrows;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Map;
 
 public abstract class FileConfig extends MemoryConfig implements FileSection {
 
@@ -39,7 +38,14 @@ public abstract class FileConfig extends MemoryConfig implements FileSection {
     @SneakyThrows(IOException.class)
     public void save(File file) {
         if (!file.exists()) {
-            if (file.getPath().contains("\\")) new File(file.getPath().substring(0, file.getPath().lastIndexOf("\\"))).mkdirs();
+            if (file.getPath().contains("\\")) {
+                System.out.println(file.getPath());
+                new File(file.getPath().substring(0, file.getPath().lastIndexOf("\\"))).mkdirs();
+            } else if (file.getPath().contains("/")) {
+                System.out.println(file.getPath());
+                new File(file.getPath().substring(0, file.getPath().lastIndexOf("/"))).mkdirs();
+            }
+
             file.createNewFile();
         }
 
@@ -48,24 +54,6 @@ public abstract class FileConfig extends MemoryConfig implements FileSection {
         @Cleanup BufferedWriter bw = new BufferedWriter(osw);
 
         bw.write(saveToString());
-    }
-
-    private void valuesToDot(String parentKey, Map<String, Object> values, Map<String, Object> loadValues) {
-        loadValues.forEach((key, value) -> {
-            String pkey;
-
-            if (parentKey != null) {
-                pkey = parentKey + "." + key;
-            } else {
-                pkey = key;
-            }
-
-            if (value instanceof Map) {
-                valuesToDot(pkey, values, (Map<String, Object>) value);
-            } else {
-                values.put(pkey, value);
-            }
-        });
     }
 
     @Override
