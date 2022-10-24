@@ -29,7 +29,7 @@ public abstract class FileConfig extends MemoryConfig implements FileSection {
 
         HashMap<String, Object> map = stringToMap(sb.toString());
 
-        valuesToDot(null, values, map);
+        if (map != null && map.size() > 0) valuesToDot(null, values, map);
 
         if (defaults.size() > 0) save(file);
     }
