@@ -11,34 +11,22 @@ public class JsonConfigTest {
 
     public static void main(String[] args) {
         JsonConfig config = new JsonConfig();
-        File file = new File("src/main/java/example", "config.json");
+        File file = new File("src/main/java/example", "config.yml");
+        config.load(file);
 
-        config.addDefault("a", "a");
-        config.addDefault("b", 1);
-        config.addDefault("c", true);
-        config.addDefault("list", Arrays.asList("a", "b", "c"));
+        config.set("a", "a");
+        config.set("b", 1);
+        config.set("c", true);
+        config.set("list", Arrays.asList("a", "b", "c"));
 
         HashMap<String, String> map = new LinkedHashMap<String, String>();
         map.put("a", "a");
         map.put("b", "b");
         map.put("c", "c");
 
-        config.addDefault("map", map);
+        config.set("map", map);
 
-        config.load(file);
-
-        System.out.println("=========================");
-
-        System.out.println("a : " + config.getString("a"));
-        System.out.println("b : " + config.getInt("b"));
-        System.out.println("c : " + config.getBoolean("c"));
-
-        System.out.println("list : " + config.getStringList("list"));
-        System.out.println("map : " + config.getMap("map"));
-        System.out.println("default map : " + config.getDefaultMap("map"));
-
-        System.out.println("=========================");
-
+        config.save(file);
     }
 
 }

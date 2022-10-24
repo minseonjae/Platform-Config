@@ -31,121 +31,270 @@ isDefault(String key);
 ```
 ###
 ## 예제 _(yaml config)_
-### ConfigTest.java
+### YamlConfigTest.java
 ``` Java
-import java.io.File;
+package example;
 
-public class ConfigTest {
+import kr.codingtree.platformconfig.YamlConfig;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public class YamlConfigTest {
 
     public static void main(String[] args) {
         YamlConfig config = new YamlConfig();
-        File configFile = new File("config.yml");
-        config.set("a", 1);
-        config.set("b", 2);
-        config.set("c", 3);
-        config.set("d", 4);
-        config.save(configFile);
+        File file = new File("src/main/java/example", "config.yml");
+        config.load(file);
+
+        config.set("a", "a");
+        config.set("b", 1);
+        config.set("c", true);
+        config.set("list", Arrays.asList("a", "b", "c"));
+
+        HashMap<String, String> map = new LinkedHashMap<String, String>();
+        map.put("a", "a");
+        map.put("b", "b");
+        map.put("c", "c");
+
+        config.set("map", map);
+
+        config.save(file);
     }
-    
+
 }
+
 ```
 ### 결과 config.yml
 ``` yaml
-a: 1
-b: 2
-c: 3
-d: 4
+a: a
+b: 1
+c: true
+list:
+- a
+- b
+- c
+map:
+  a: a
+  b: b
+  c: c
 ```
 ###
 ## 예제 _(yaml config, default)_
-### ConfigTest.java
+### YamlConfigDefaultTest.java
 ``` Java
-import java.io.File;
+package example;
 
-public class ConfigTest {
+import kr.codingtree.platformconfig.YamlConfig;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public class YamlConfigDefaultTest {
 
     public static void main(String[] args) {
         YamlConfig config = new YamlConfig();
-        File configFile = new File("config.yml");
-        config.addDefault("a", 1);
-        config.addDefault("b", 2);
-        config.addDefault("c", 3);
-        config.addDefault("d", 4);
-        config.load(configFile);
-        
-        config.set("b", 5);
-        config.set("d", 6);
-        config.save(configFile);
+        File file = new File("src/main/java/example", "default-config.yml");
+
+        config.addDefault("a", "a");
+        config.addDefault("b", 1);
+        config.addDefault("c", true);
+        config.addDefault("list", Arrays.asList("a", "b", "c"));
+
+        HashMap<String, String> map = new LinkedHashMap<String, String>();
+        map.put("a", "a");
+        map.put("b", "b");
+        map.put("c", "c");
+
+        config.addDefault("map", map);
+
+        config.load(file);
+
+        config.set("a", "b");
+        config.set("b", 2);
+        config.set("c", false);
+
+        System.out.println("=========================");
+
+        System.out.println("a : " + config.getString("a"));
+        System.out.println("b : " + config.getInt("b"));
+        System.out.println("c : " + config.getBoolean("c"));
+
+        System.out.println("list : " + config.getStringList("list"));
+        System.out.println("map : " + config.getMap("map"));
+
+        System.out.println("=========================");
+
     }
-    
+
 }
 ```
-### 결과 config.yml
+
+### 결과 콘솔
+```text
+=========================
+a : b
+b : 2
+c : false
+list : [a, b, c]
+map : {a=a, b=b, c=c}
+=========================
+```
+
+### 결과 default-config.yml
 ``` yaml
-a: 1
-b: 5
-c: 3
-d: 6
+a: a
+b: 1
+c: true
+list:
+- a
+- b
+- c
+map:
+  a: a
+  b: b
+  c: c
+
 ```
 ###
 ## 예제 _(json config)_
-### ConfigTest.java
+### JsonConfigTest.java
 ``` Java
-import java.io.File;
+package example;
 
-public class ConfigTest {
+import kr.codingtree.platformconfig.JsonConfig;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public class JsonConfigTest {
 
     public static void main(String[] args) {
         JsonConfig config = new JsonConfig();
-        File configFile = new File("config.json");
-        config.set("a", 1);
-        config.set("b", 2);
-        config.set("c", 3);
-        config.set("d", 4);
-        config.save(configFile);
+        File file = new File("src/main/java/example", "config.yml");
+        config.load(file);
+
+        config.set("a", "a");
+        config.set("b", 1);
+        config.set("c", true);
+        config.set("list", Arrays.asList("a", "b", "c"));
+
+        HashMap<String, String> map = new LinkedHashMap<String, String>();
+        map.put("a", "a");
+        map.put("b", "b");
+        map.put("c", "c");
+
+        config.set("map", map);
+
+        config.save(file);
     }
-    
+
 }
+
 ```
 ### 결과 config.json
 ``` json
 {
-    "a":1,
-    "b":2,
-    "c":3,
-    "d":4
+  "a": "a",
+  "b": 1.0,
+  "c": true,
+  "list": [
+    "a",
+    "b",
+    "c"
+  ],
+  "map": {
+    "a": "aa",
+    "b": "bb",
+    "c": "cc"
+  }
 }
 ```
 ###
 ## 예제 _(json config, default)_
-### ConfigTest.java
+### JsonConfigDefaultTest.java
 ``` Java
-import java.io.File;
+package example;
 
-public class ConfigTest {
+import kr.codingtree.platformconfig.JsonConfig;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+public class JsonConfigDefaultTest {
 
     public static void main(String[] args) {
         JsonConfig config = new JsonConfig();
-        File configFile = new File("config.json");
-        config.addDefault("a", 1);
-        config.addDefault("b", 2);
-        config.addDefault("c", 3);
-        config.addDefault("d", 4);
-        config.load(configFile);
-        
-        config.set("b", 5);
-        config.set("d", 6);
-        config.save(configFile);
+        File file = new File("src/main/java/example", "default-config.json");
+
+        config.addDefault("a", "a");
+        config.addDefault("b", 1);
+        config.addDefault("c", true);
+        config.addDefault("list", Arrays.asList("a", "b", "c"));
+
+        HashMap<String, String> map = new LinkedHashMap<String, String>();
+        map.put("a", "a");
+        map.put("b", "b");
+        map.put("c", "c");
+
+        config.addDefault("map", map);
+
+        config.load(file);
+
+        config.set("a", "b");
+        config.set("b", 2);
+        config.set("c", false);
+
+        System.out.println("=========================");
+
+        System.out.println("a : " + config.getString("a"));
+        System.out.println("b : " + config.getInt("b"));
+        System.out.println("c : " + config.getBoolean("c"));
+
+        System.out.println("list : " + config.getStringList("list"));
+        System.out.println("map : " + config.getMap("map"));
+
+        System.out.println("=========================");
+
     }
-    
+
 }
 ```
+
+### 결과 콘솔
+```text
+=========================
+a : b
+b : 2
+c : false
+list : [a, b, c]
+map : {a=a, b=b, c=c}
+=========================
+```
+
 ### 결과 config.json
 ``` json
 {
-    "a":1,
-    "b":5,
-    "c":3,
-    "d":6
+  "a": "a",
+  "b": 1.0,
+  "c": true,
+  "list": [
+    "a",
+    "b",
+    "c"
+  ],
+  "map": {
+    "a": "a",
+    "b": "b",
+    "c": "c"
+  }
 }
 ```
