@@ -35,6 +35,7 @@ public class JsonConfigTest {
 
         System.out.println("list : " + config.getStringList("list"));
         System.out.println("map : " + config.getMap("map"));
+        System.out.println("default map : " + config.getDefaultMap("map"));
 
         System.out.println("=========================");
 
